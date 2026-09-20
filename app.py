@@ -194,7 +194,48 @@ with tabs[5]:
 
 with tabs[6]:
     st.subheader("Relatório de descobertas")
-    st.write("As descobertas abaixo são pontos iniciais e devem ser confirmadas pelos resultados exibidos nos módulos anteriores.")
-    st.markdown("**Descoberta 1 — distribuição/outliers:** balance apresenta forte assimetria à direita, com média acima da mediana e valores extremos.")
-    st.markdown("**Descoberta 2 — associação:** pdays e previous apresentam associação linear positiva moderada no conjunto analisado.")
-    st.markdown("**Descoberta 3 — simulação:** aumentando o tamanho das amostras no TCL, as médias amostrais tendem a se concentrar ao redor da média e adquirir formato aproximadamente normal.")
+    st.write(
+        "As descobertas abaixo foram obtidas a partir das análises e "
+        "simulações realizadas nos módulos anteriores."
+    )
+
+    # Descoberta 1: distribuição de balance
+    balance = df["balance"].dropna().astype(float).tolist()
+    media_balance = ms.media(balance)
+    mediana_balance = ms.mediana(balance)
+    dp_balance = ms.desvio_padrao(balance, True)
+    cv_balance = ms.coeficiente_variacao(balance)
+
+    st.markdown(
+        f"**Descoberta 1 — distribuição de `balance`:** "
+        f"a média do saldo foi **{media_balance:.2f}**, enquanto a mediana foi "
+        f"**{mediana_balance:.2f}**. O desvio-padrão amostral foi "
+        f"**{dp_balance:.2f}** e o coeficiente de variação foi **{cv_balance:.2f}%**. "
+        "A diferença entre média e mediana, juntamente com a elevada dispersão, "
+        "é compatível com a forte assimetria à direita observada nos gráficos."
+    )
+
+    # Descoberta 2: associação entre pdays e previous
+    pares_desc = df[["pdays", "previous"]].dropna()
+    pdays_desc = pares_desc["pdays"].astype(float).tolist()
+    previous_desc = pares_desc["previous"].astype(float).tolist()
+
+    r_desc = ms.correlacao_pearson(pdays_desc, previous_desc)
+    _, _, r2_desc = ms.regressao_linear(pdays_desc, previous_desc)
+
+    st.markdown(
+        f"**Descoberta 2 — associação entre `pdays` e `previous`:** "
+        f"o coeficiente de correlação de Pearson foi **r = {r_desc:.4f}** "
+        f"e o coeficiente de determinação foi **R² = {r2_desc:.4f}**. "
+        "Os resultados indicam uma associação linear positiva moderada entre "
+        "as variáveis. Essa associação não implica relação de causalidade."
+    )
+
+    # Descoberta 3: Teorema Central do Limite
+    st.markdown(
+        "**Descoberta 3 — Teorema Central do Limite:** na simulação realizada "
+        "com a variável `age`, utilizando amostras de tamanho **n = 30**, "
+        "as médias amostrais se concentraram ao redor da média populacional "
+        "e apresentaram formato aproximadamente normal. Esse comportamento "
+        "é compatível com o Teorema Central do Limite."
+    )
