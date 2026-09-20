@@ -32,7 +32,7 @@ if df is None:
 st.success(f"Dataset carregado: {len(df):,} registros e {len(df.columns)} variáveis.")
 num_cols=df.select_dtypes(include=np.number).columns.tolist()
 cat_cols=df.select_dtypes(exclude=np.number).columns.tolist()
-tabs=st.tabs(["Módulo 0","Módulo 1","Módulo 2","Módulo 3","Módulo 4","Módulo 5","Módulo 6"])
+tabs=st.tabs(["Módulo 0","Módulo 1","Módulo 2","Módulo 3",“Módulo 4”,"Módulo 5","Módulo 6"])
 
 with tabs[0]:
     st.subheader("Dados reais")
@@ -92,16 +92,96 @@ with tabs[3]:
 
 with tabs[4]:
     st.subheader("Distribuições teóricas")
-    c=st.selectbox("Variável numérica",num_cols,key="m4"); tipo=st.radio("Distribuição candidata",["Normal","Poisson"],horizontal=True)
-    x=df[c].dropna().astype(float).to_numpy()
-    fig,ax=plt.subplots(); ax.hist(x,bins="auto",density=True,alpha=.55,label="Dados")
-    if tipo=="Normal":
-        mu=ms.media(x); sd=ms.desvio_padrao(x,False); grid=np.linspace(x.min(),x.max(),400)
-        y=np.exp(-.5*((grid-mu)/sd)**2)/(sd*math.sqrt(2*math.pi)); ax.plot(grid,y,label=f"Normal (μ={mu:.2f}, σ={sd:.2f})")
+
+    tipo = st.radio(
+        "Distribuição candidata",
+        ["Normal", "Poisson"],
+        horizontal=True
+    )
+
+    if tipo == "Normal":
+        c = st.selectbox("Variável numérica", num_cols, key="m4_normal")
+        x = df[c].dropna().astype(float).to_numpy()
+
+        fig, ax = plt.subplots()
+        ax.hist(x, bins="auto", density=True, alpha=.55, label="Dados")
+
+        mu = ms.media(x)
+        sd = ms.desvio_padrao(x, False)
+        grid = np.linspace(x.min(), x.max(), 400)
+
+        y = np.exp(-.5 * ((grid - mu) / sd) ** 2) / (
+            sd * math.sqrt(2 * math.pi)
+        )
+
+        ax.plot(
+            grid,
+            y,
+            label=f"Normal (μ={mu:.2f}, σ={sd:.2f})"
+        )
+
+        ax.legend()
+        ax.set_title(f"Normal sobre histograma — {c}")
+        st.pyplot(fig)
+        plt.close(fig)
+
+        st.info(
+            "A curva Normal foi ajustada usando a média e o desvio-padrão "
+            "estimados a partir dos dados. A comparação visual permite observar "
+            "o quanto a distribuição empírica se aproxima ou se afasta do modelo Normal."
+        )
+
     else:
-        vals=np.unique(x.astype(int)); lam=ms.media(x); ax.plot(vals,poisson.pmf(vals,lam),"o",label=f"Poisson (λ={lam:.2f})")
-    ax.legend(); ax.set_title(f"{tipo} sobre histograma — {c}"); st.pyplot(fig); plt.close(fig)
-    st.info("A sobreposição é uma avaliação visual do ajuste; não substitui um teste formal de aderência.")
+        poisson_cols = [
+            col for col in ["campaign", "previous"]
+            if col in df.columns
+        ]
+
+        c = st.selectbox(
+            "Variável de contagem",
+            poisson_cols,
+            key="m4_poisson"
+        )
+
+        x = df[c].dropna().astype(int).to_numpy()
+
+        fig, ax = plt.subplots()
+
+        valores, contagens = np.unique(x, return_counts=True)
+        frequencias = contagens / len(x)
+
+        ax.bar(
+            valores,
+            frequencias,
+            alpha=.55,
+            label="Dados"
+        )
+
+        lam = ms.media(x)
+
+        k = np.arange(0, int(x.max()) + 1)
+
+        ax.plot(
+            k,
+            poisson.pmf(k, lam),
+            "o-",
+            label=f"Poisson (λ={lam:.2f})"
+        )
+
+        ax.set_xlim(-0.5, min(int(x.max()) + 0.5, 25))
+        ax.set_xlabel(c)
+        ax.set_ylabel("Probabilidade / frequência relativa")
+        ax.set_title(f"Poisson sobre distribuição observada — {c}")
+        ax.legend()
+
+        st.pyplot(fig)
+        plt.close(fig)
+
+        st.info(
+            "A distribuição de Poisson é apropriada para variáveis discretas "
+            "de contagem. Por isso, nesta análise são utilizadas variáveis como "
+            "'campaign' e 'previous', em vez de idade."
+        )
 
 with tabs[5]:
     st.subheader("Correlação e regressão linear")
