@@ -14,12 +14,10 @@ st.caption("Maria Luiza de Freitas Viana — 72650012 | Projeto individual")
 
 @st.cache_data
 def carregar_dados():
-    url="https://archive.ics.uci.edu/ml/machine-learning-databases/00222/bank.zip"
     try:
-        r=requests.get(url,timeout=20); r.raise_for_status()
-        z=zipfile.ZipFile(io.BytesIO(r.content))
-        with z.open("bank/bank-full.csv") as f: return pd.read_csv(f,sep=";")
-    except Exception: return None
+        return pd.read_csv("bank-full.csv", sep=";")
+    except Exception:
+        return None
 
 df=carregar_dados()
 if df is None:
