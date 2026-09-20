@@ -90,11 +90,28 @@ O usuário escolhe duas variáveis numéricas. A aplicação apresenta o diagram
 A interpretação é feita no contexto do modelo linear. É destacado que correlação não implica causalidade.
 
 ## 9. Módulo 6 — Descobertas
-As três descobertas a seguir devem ser conferidas na execução final da aplicação e acompanhadas dos respectivos prints.
 
-1. **Distribuição de balance:** a variável apresenta assimetria à direita, com média superior à mediana e valores extremos.
-2. **Associação entre pdays e previous:** as duas variáveis apresentam associação linear positiva moderada no conjunto.
-3. **Teorema Central do Limite:** conforme o tamanho da amostra aumenta, as médias amostrais ficam mais concentradas em torno da média e apresentam formato aproximadamente normal.
+A partir das análises realizadas no laboratório, foram selecionadas três descobertas estatísticas principais.
+
+### Descoberta 1 — Distribuição da variável `balance`
+
+A variável `balance`, que representa o saldo dos clientes, apresentou média de **1362,27** e mediana de **448,00**. O desvio-padrão amostral foi de **3044,77** e o coeficiente de variação foi de aproximadamente **223,51%**.
+
+A diferença considerável entre a média e a mediana, juntamente com a elevada dispersão dos dados e os valores extremos observados nos gráficos, indica uma distribuição com forte assimetria à direita. Isso mostra que existem clientes com saldos muito elevados que aumentam a média da variável.
+
+### Descoberta 2 — Associação entre `pdays` e `previous`
+
+Ao analisar as variáveis `pdays` e `previous`, foi obtido um coeficiente de correlação de Pearson de aproximadamente **r = 0,4548** e um coeficiente de determinação de **R² = 0,2069**.
+
+Esses resultados indicam uma associação linear positiva moderada entre as duas variáveis no conjunto analisado. O valor de R² indica que aproximadamente **20,69% da variação observada em `previous` pode ser explicada pelo modelo linear utilizando `pdays`**, dentro das limitações desse modelo.
+
+É importante destacar que a existência de correlação entre as variáveis não significa que exista uma relação de causa e efeito entre elas.
+
+### Descoberta 3 — Teorema Central do Limite
+
+Na simulação do Teorema Central do Limite foi utilizada a variável `age`, com amostras de tamanho **n = 30** retiradas repetidamente do conjunto de dados.
+
+Foi possível observar que as médias obtidas nas diferentes amostras se concentraram ao redor da média populacional e apresentaram uma distribuição aproximadamente normal. Esse comportamento ilustra o Teorema Central do Limite e mostra como a distribuição das médias amostrais tende a assumir formato aproximadamente normal conforme são realizadas amostragens repetidas.
 
 ## 10. Conclusão
 O laboratório reúne os principais conceitos estatísticos solicitados na atividade em uma aplicação interativa. A separação entre o núcleo estatístico próprio e a interface permite verificar que as medidas apresentadas ao usuário não dependem diretamente das funções estatísticas prontas das bibliotecas de referência.
