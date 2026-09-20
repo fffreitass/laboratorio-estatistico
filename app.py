@@ -32,7 +32,7 @@ if df is None:
 st.success(f"Dataset carregado: {len(df):,} registros e {len(df.columns)} variáveis.")
 num_cols=df.select_dtypes(include=np.number).columns.tolist()
 cat_cols=df.select_dtypes(exclude=np.number).columns.tolist()
-tabs=st.tabs(["Módulo 0","Módulo 1","Módulo 2","Módulo 3",“Módulo 4”,"Módulo 5","Módulo 6"])
+tabs=st.tabs(["Módulo 0","Módulo 1","Módulo 2","Módulo 3","Módulo 4","Módulo 5","Módulo 6"])
 
 with tabs[0]:
     st.subheader("Dados reais")
