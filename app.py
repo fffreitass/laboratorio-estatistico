@@ -55,7 +55,8 @@ with tabs[2]:
         c=st.selectbox("Variável",num_cols,key="m2n"); x=df[c].dropna().astype(float).tolist()
         q1,med,q3=ms.quartis(x); iqr=q3-q1; lo=q1-1.5*iqr; hi=q3+1.5*iqr
         out=sum(v<lo or v>hi for v in x)
-        hist=pd.cut(pd.Series(x),bins="auto").value_counts().sort_index().rename_axis("Classe").reset_index(name="Frequência")
+        bins = np.histogram_bin_edges(x, bins="auto")
+hist = pd.cut(pd.Series(x), bins=bins, include_lowest=True).value_counts().sort_index().rename_axis("Classe").reset_index(name="Frequência")
         hist["Frequência relativa (%)"]=hist["Frequência"]/len(x)*100
         st.dataframe(hist,use_container_width=True)
         st.write(f"Média: {ms.media(x):.4f} | Mediana: {med:.4f} | DP: {ms.desvio_padrao(x):.4f} | Outliers pelo IQR: {out}")
