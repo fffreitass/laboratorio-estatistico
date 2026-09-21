@@ -117,4 +117,34 @@ Foi possível observar que as médias obtidas nas diferentes amostras se concent
 O laboratório reúne os principais conceitos estatísticos solicitados na atividade em uma aplicação interativa. A separação entre o núcleo estatístico próprio e a interface permite verificar que as medidas apresentadas ao usuário não dependem diretamente das funções estatísticas prontas das bibliotecas de referência.
 
 ## 11. Evidências
-Inserir aqui capturas da aplicação para os módulos 0 a 6 e, especialmente, os resultados utilizados para sustentar as três descobertas.
+As capturas a seguir registram a execução da aplicação e apresentam evidências dos principais resultados utilizados nas análises deste relatório.
+
+### Evidência 1 — Dataset utilizado
+
+A aplicação carregou corretamente o conjunto Bank Marketing, contendo 45.211 registros e 17 variáveis.
+
+![Dataset carregado](evidencias/01-dataset.png.png)
+
+### Evidência 2 — Estatística descritiva da variável `balance`
+
+A análise da variável `balance` apresentou média de 1362,2721, mediana de 448,0000, desvio-padrão amostral de 3044,7658 e coeficiente de variação de aproximadamente 223,51%.
+
+![Estatísticas da variável balance](evidencias/02-estatistica-balance.png.png)
+
+### Evidência 3 — Distribuição e outliers de `balance`
+
+O histograma e o boxplot permitem observar a forte assimetria à direita da variável e a presença de diversos valores extremos.
+
+![Histograma e boxplot de balance](evidencias/03-histograma-boxplot-balance.png.png)
+
+### Evidência 4 — Teorema Central do Limite
+
+A simulação foi realizada utilizando a variável `age`, com 2.000 repetições e amostras de tamanho 30. A distribuição das médias amostrais apresentou formato aproximadamente normal e concentração em torno da média da variável.
+
+![Simulação do Teorema Central do Limite](evidencias/04-teorema-central-limite.png.png)
+
+### Evidência 5 — Correlação e regressão
+
+Na análise entre `pdays` e `previous`, foi obtido coeficiente de correlação de Pearson de aproximadamente 0,4548 e R² de aproximadamente 0,2069, evidenciando associação linear positiva entre as variáveis.
+
+![Regressão entre pdays e previous](evidencias/05-regressao-pdays-previous.png.png)
